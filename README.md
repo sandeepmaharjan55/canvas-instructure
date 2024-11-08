@@ -1,6 +1,6 @@
 ## canvas instructure
 
-- This project is in NodeJs(Express) as back-end.
+- This project is in NodeJs(Express) as back-end and react as a frontend.
 
 ## To setup in local
 
@@ -13,19 +13,6 @@ yarn install
 
 - Add db connection string in config/dev and config/prod as per requirement for Production or Development
 
-### config/dev
-
-```
-MONGODB_URI:
-    "mongodb://localhost:{portNo}/<database name>",
-```
-
-### config/prod
-
-```
-MONGODB_URI:
-    "mongodb://localhost:{portNo}/<database name>",
-```
 
 ### Create .env file in root folder
 
