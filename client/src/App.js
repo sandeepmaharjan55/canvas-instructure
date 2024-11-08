@@ -1,174 +1,572 @@
-// import React, { useState, useEffect } from 'react';
-// const PluginDashboard = () => {
-//   const [data, setData] = useState([]); // State to hold the data
-//   const [loading, setLoading] = useState(true); // State to manage loading status
-//   const [error, setError] = useState(null); // State to manage any errors
-//   useEffect(() => {
-//     // Function to fetch data
-//     const fetchData = async () => {
-//       try {
-//         const response = await fetch('https://canvas.instructure.com/api/v1/courses',
-//             { 
-//             mode: 'no-cors',
-//             method: 'GET',
-//             host:'canvas.instructure.com',
-//             headers: {
-//               'Accept': 'application/json',
-//               'Authorization':`Bearer ${process.env.REACT_APP_CANVAS_TOKEN}`,
-//             }
-//           }
-//         ); 
+// import React, { useEffect, useState } from 'react';
+// import { BrowserRouter as Router, Route, Link, Routes, useParams } from 'react-router-dom';
+// import axios from 'axios';
+// import {
+//   AppBar,
+//   Toolbar,
+//   Typography,
+//   Container,
+//   List,
+//   ListItem,
+//   ListItemText,
+//   CircularProgress,
+//   Box,
+//   Paper,
+//   Button,
+//   Accordion,
+//   AccordionSummary,
+//   AccordionDetails,
+// } from '@mui/material';
 
-//         if (!response.ok) {
-//           throw new Error('Network response was not ok'); // Handle HTTP errors
-//         }
-//         const result = await response.json(); // Parse JSON response
-       
-//         setData(result); // Set data in state
+
+// // Main component displaying list of courses
+// const CoursesList = ({ courses }) => {
+//   return (
+//     <Container maxWidth="md">
+//       <Typography variant="h4" component="h1" gutterBottom>
+//         Canvas Courses
+//       </Typography>
+//       <List>
+//         {courses.map((course) => (
+//           <Paper key={course.id} elevation={3} style={{ marginBottom: '1rem' }}>
+//             <ListItem button component={Link} to={`/courses/${course.id}`}>
+//               <ListItemText primary={course.name} />
+//             </ListItem>
+//           </Paper>
+//         ))}
+//       </List>
+//     </Container>
+//   );
+// };
+
+// // Component to fetch and display enrollment data
+// // Updated CourseEnrollments component in React
+// const CourseEnrollments = () => {
+//   const { id } = useParams();
+//   const [enrollments, setEnrollments] = useState([]);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     const fetchEnrollments = async () => {
+//       try {
+//         const response = await axios.get(`http://localhost:7004/api/courses/${id}`);
+//         setEnrollments(response.data);
 //       } catch (error) {
-//         setError(error); // Set error in state
+//         console.error('Error fetching enrollments:', error);
 //       } finally {
-//         setLoading(false); // Set loading to false after fetching
+//         setLoading(false);
 //       }
 //     };
 
-//     fetchData(); // Call the fetch function
-//   }, []); // Empty dependency array means this runs once when the component mounts
+//     fetchEnrollments();
+//   }, [id]);
 
-//   // Render loading state
 //   if (loading) {
-//     return <div>Loading...</div>;
-    
+//     return (
+//       <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
+//         <CircularProgress />
+//       </Box>
+//     );
 //   }
 
-//   // Render error state
-//   if (error) {
-//     return <div>Error: {error.message}</div>;
-//   }
-
-//   // Render the data
 //   return (
-//     <div>
-//       <h2>Data from API:</h2>
-//       <ul>
-//           {data.data.result.map(item => (
-//           <li key={item._id}>
-//             <h3>{item.name}</h3>
-//             <p>Email: {item.email}</p>
-//             <p>Role: {item.role}</p>
-//           </li>
+//     <Container maxWidth="md">
+//       <Typography variant="h5" component="h2" gutterBottom>
+//         Enrollments for Course ID: {id}
+//       </Typography>
+//       <Box>
+//         {enrollments.map((enrollment) => (
+//           <Paper key={enrollment.id} elevation={3} style={{ marginBottom: '1rem', padding: '1rem' }}>
+//             <Accordion>
+//               <AccordionSummary
+//                 aria-controls={`panel-${enrollment.id}-content`}
+//                 id={`panel-${enrollment.id}-header`}
+//               >
+//                 <Typography>{enrollment.type==="StudentEnrollment"?"Student":"Teacher"}: {enrollment.user.name}</Typography>
+//               </AccordionSummary>
+//               <AccordionDetails>
+//                 {/* Accordion Details (List of Enrollment Details) */}
+//                 <Box>
+//                   <Typography variant="body1">
+//                     <strong>Enrollment State:</strong> {enrollment.enrollment_state}
+//                   </Typography>
+//                   <Typography variant="body1">
+//                     <strong>Last Activity:</strong> {new Date(enrollment.last_activity_at).toLocaleString()}
+//                   </Typography>
+//                   <Typography variant="body1">
+//                     <strong>Total Activity Time:</strong> {`${enrollment.total_activity_time ?? 0} minutes`}
+//                   </Typography>
+//                   <Typography variant="body1">
+//                     <strong>Page Views:</strong> {enrollment.page_views}
+//                   </Typography>
+//                   <Typography variant="body1">
+//                     <strong>Max Page Views:</strong> {enrollment.max_page_views}
+//                   </Typography>
+
+//                   {/* Additional Student Analytics Information */}
+//                   <Typography variant="body1">
+//                     <strong>Participation:</strong> {enrollment.participation_count}
+//                   </Typography>
+//                   <Typography variant="body1">
+//                     <strong>Max Participation:</strong> {enrollment.max_participation_count}
+//                   </Typography>
+//                   <Typography variant="body1">
+//                     <strong>Participation Level:</strong> {enrollment.participation_level}
+//                   </Typography>
+                  
+//                    {/* Additional Student Analytics Information  Tardiness*/}
+                  
+//                   <Typography variant="body1">
+//                     <strong>Tardiness Data Below</strong>
+//                   </Typography>
+//                   <Typography variant="body1">
+//                     <strong>Missing:</strong> {enrollment.tardiness_breakdown_missing}
+//                   </Typography>
+//                   <Typography variant="body1">
+//                     <strong>Late:</strong> {enrollment.tardiness_breakdown_late}
+//                   </Typography>
+//                   <Typography variant="body1">
+//                     <strong>On Time:</strong> {enrollment.tardiness_breakdown_on_time}
+//                   </Typography>
+//                   <Typography variant="body1">
+//                     <strong>Floating:</strong> {enrollment.tardiness_breakdown_floating}
+//                   </Typography>
+//                   <Typography variant="body1">
+//                     <strong>Total:</strong> {enrollment.tardiness_breakdown_total}
+//                   </Typography>
+//                 </Box>
+//               </AccordionDetails>
+//             </Accordion>
+//           </Paper>
 //         ))}
-
-//       </ul>
-//     </div>
+//       </Box>
+//     </Container>
 //   );
-
-//   //   return (
-// //     <div className="p-4 max-w-6xl mx-auto">
-// //       <div className="grid gap-4">
-// //         <Card>
-// //           <CardHeader>
-// //             <h2 className="text-2xl font-bold">Student Engagement Dashboard</h2>
-// //           </CardHeader>
-// //           <CardContent>
-// //             <div className="mb-4">
-// //               {loading ? (
-// //                 <div className="flex items-center justify-center h-64">
-// //                   <span className="text-gray-500">Loading data...</span>
-// //                 </div>
-// //               ) : (
-// //                 <BarChart width={600} height={300} data={engagementData}>
-// //                   <CartesianGrid strokeDasharray="3 3" />
-// //                   <XAxis dataKey="week" />
-// //                   <YAxis />
-// //                   <Tooltip />
-// //                   <Bar dataKey="engagement" fill="#4f46e5" />
-// //                 </BarChart>
-// //               )}
-// //             </div>
-// //           </CardContent>
-// //         </Card>
-
-// //         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-// //           <Card>
-// //             <CardHeader>
-// //               <h3 className="text-xl font-semibold">At-Risk Students</h3>
-// //             </CardHeader>
-// //             <CardContent>
-// //               <div className="flex items-center space-x-2">
-// //                 <AlertCircle className="text-red-500" />
-// //                 <span>3 students need attention</span>
-// //               </div>
-// //             </CardContent>
-// //           </Card>
-
-// //           <Card>
-// //             <CardHeader>
-// //               <h3 className="text-xl font-semibold">Course Progress</h3>
-// //             </CardHeader>
-// //             <CardContent>
-// //               <div className="h-4 bg-gray-200 rounded-full">
-// //                 <div 
-// //                   className="h-4 bg-green-500 rounded-full" 
-// //                   style={{ width: '75%' }}
-// //                 ></div>
-// //               </div>
-// //               <span className="text-sm text-gray-600">75% Complete</span>
-// //             </CardContent>
-// //           </Card>
-// //         </div>
-// //       </div>
-// //     </div>
-// //   );
-
 // };
 
-// export default PluginDashboard;
 
-import React, { useState, useEffect } from 'react';
+// // Main App Component
+// const App = () => {
+//   const [courses, setCourses] = useState([]);
 
-const PluginDashboard = () => {
-  const [courses, setCourses] = useState([]); // State to hold the course data
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
+//   useEffect(() => {
+//     const fetchCourses = async () => {
+//       try {
+//         const response = await axios.get('http://localhost:7004/api/courses/list');
+//         setCourses(response.data);
+//       } catch (error) {
+//         console.error('Error fetching courses:', error);
+//       }
+//     };
+
+//     fetchCourses();
+//   }, []);
+
+//   return (
+//     <Router>
+//       <AppBar position="static">
+//         <Toolbar>
+//           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+//             Canvas Instructure Student Data Visualization
+//           </Typography>
+//           <Button color="inherit" component={Link} to="/">Home</Button>
+//         </Toolbar>
+//       </AppBar>
+//       <Routes>
+//         <Route path="/" element={<CoursesList courses={courses} />} />
+//         <Route path="/courses/:id" element={<CourseEnrollments />} />
+//       </Routes>
+//     </Router>
+//   );
+// };
+
+// export default App;
+
+
+
+
+
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Link, Routes, useParams } from 'react-router-dom';
+import axios from 'axios';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Container,
+  List,
+  ListItem,
+  ListItemText,
+  CircularProgress,
+  Box,
+  Paper,
+  Button,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from '@mui/material';
+
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { Card, CardHeader, CardContent, Input, Table, TableBody, TableCell, TableHead, TableRow, Tabs, Tab } from '@mui/material';
+import { Filter, ArrowUp, ArrowDown } from 'lucide-react';
+import './App.css';
+
+// Main component displaying list of courses
+const CoursesList = ({ courses }) => {
+  return (
+    <Container maxWidth="md">
+      <Typography variant="h4" component="h1" gutterBottom>
+        Canvas Courses
+      </Typography>
+      <List>
+        {courses.map((course) => (
+          <Paper key={course.id} elevation={3} style={{ marginBottom: '1rem' }}>
+            <ListItem button component={Link} to={`/courses/${course.id}`}>
+              <ListItemText primary={course.name} />
+            </ListItem>
+          </Paper>
+        ))}
+      </List>
+    </Container>
+  );
+};
+
+// Component to fetch and display enrollment data
+// Updated CourseEnrollments component in React
+
+const studentPerformanceData = [
+  { id: 'ST001', name: 'Alice Johnson', engagement: 95, attendance: 98, submissions: 100, grade: 92, risk: 'Low' },
+  { id: 'ST002', name: 'Bob Smith', engagement: 78, attendance: 85, submissions: 90, grade: 85, risk: 'Medium' },
+  { id: 'ST003', name: 'Carol Wilson', engagement: 45, attendance: 60, submissions: 70, grade: 65, risk: 'High' }
+];
+
+const engagementTrends = [
+  { week: 'W1', forum: 85, video: 92, quiz: 78, assignment: 88 },
+  { week: 'W2', forum: 88, video: 85, quiz: 82, assignment: 90 },
+  { week: 'W3', forum: 92, video: 88, quiz: 85, assignment: 87 },
+  { week: 'W4', forum: 90, video: 95, quiz: 88, assignment: 92 }
+];
+
+const predictionData = [
+  { score: 85, probability: 90, risk: 'Low' },
+  { score: 65, probability: 70, risk: 'Medium' },
+  { score: 45, probability: 40, risk: 'High' }
+];
+
+const CourseEnrollments = () => {
+  const { id } = useParams();
+  const [enrollments, setEnrollments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedStudent, setSelectedStudent] = useState(null);
+
+  //from here UI
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedTab, setSelectedTab] = useState('individual');
+  
+    const handleTabChange = (event, newTab) => setSelectedTab(newTab);
+
+  
+  useEffect(() => {
+    const fetchEnrollments = async () => {
+      try {
+        const response = await axios.get(`http://localhost:7004/api/courses/${id}`);
+        setEnrollments(response.data);
+      } catch (error) {
+        console.error('Error fetching enrollments:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEnrollments();
+  }, [id]);
+
+  const StudentDetail = ({ student }) => (
+    <Card variant="outlined" className="mt-6 shadow-lg">
+      <CardHeader
+        title={`Student Detail: ${student.name}`}
+        className="bg-blue-100 font-semibold text-lg p-4"
+      />
+      <CardContent className="p-6">
+        <div>
+          {/* Performance Bar Chart */}
+          <div>
+            <BarChart width={300} height={300} data={[
+              { subject: 'Engagement', score: student.engagement },
+              { subject: 'Attendance', score: student.attendance },
+              { subject: 'Submissions', score: student.submissions },
+              { subject: 'Grade', score: student.grade }
+            ]}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="subject" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="score" fill="#82ca9d" />
+            </BarChart>
+          </div>
+
+          {/* Detailed Metrics */}
+          <div>
+            <h4>Key Metrics</h4>
+            <div>
+              {[
+                { label: 'Engagement Score', value: `${student.engagement}%` },
+                { label: 'Attendance Rate', value: `${student.attendance}%` },
+                { label: 'Submission Rate', value: `${student.submissions}%` },
+                { label: 'Current Grade', value: `${student.grade}%` },
+                { label: 'Risk Level', value: student.risk }
+              ].map((metric, index) => (
+                <div key={index}>
+                  <div>{metric.label}</div>
+                  <div>{metric.value}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  // return (
+  //   <Container maxWidth="md">
+  //     <Typography variant="h5" component="h2" gutterBottom>
+  //       Enrollments for Course ID: {id}
+  //     </Typography>
+  //     <Box>
+  //       {enrollments.map((enrollment) => (
+  //         <Paper key={enrollment.id} elevation={3} style={{ marginBottom: '1rem', padding: '1rem' }}>
+  //           <Accordion>
+  //             <AccordionSummary
+  //               aria-controls={`panel-${enrollment.id}-content`}
+  //               id={`panel-${enrollment.id}-header`}
+  //             >
+  //               <Typography>{enrollment.type==="StudentEnrollment"?"Student":"Teacher"}: {enrollment.user.name}</Typography>
+  //             </AccordionSummary>
+  //             <AccordionDetails>
+  //               {/* Accordion Details (List of Enrollment Details) */}
+  //               <Box>
+  //                 <Typography variant="body1">
+  //                   <strong>Enrollment State:</strong> {enrollment.enrollment_state}
+  //                 </Typography>
+  //                 <Typography variant="body1">
+  //                   <strong>Last Activity:</strong> {new Date(enrollment.last_activity_at).toLocaleString()}
+  //                 </Typography>
+  //                 <Typography variant="body1">
+  //                   <strong>Total Activity Time:</strong> {`${enrollment.total_activity_time ?? 0} minutes`}
+  //                 </Typography>
+  //                 <Typography variant="body1">
+  //                   <strong>Page Views:</strong> {enrollment.page_views}
+  //                 </Typography>
+  //                 <Typography variant="body1">
+  //                   <strong>Max Page Views:</strong> {enrollment.max_page_views}
+  //                 </Typography>
+
+  //                 {/* Additional Student Analytics Information */}
+  //                 <Typography variant="body1">
+  //                   <strong>Participation:</strong> {enrollment.participation_count}
+  //                 </Typography>
+  //                 <Typography variant="body1">
+  //                   <strong>Max Participation:</strong> {enrollment.max_participation_count}
+  //                 </Typography>
+  //                 <Typography variant="body1">
+  //                   <strong>Participation Level:</strong> {enrollment.participation_level}
+  //                 </Typography>
+                  
+  //                  {/* Additional Student Analytics Information  Tardiness*/}
+                  
+  //                 <Typography variant="body1">
+  //                   <strong>Tardiness Data Below</strong>
+  //                 </Typography>
+  //                 <Typography variant="body1">
+  //                   <strong>Missing:</strong> {enrollment.tardiness_breakdown_missing}
+  //                 </Typography>
+  //                 <Typography variant="body1">
+  //                   <strong>Late:</strong> {enrollment.tardiness_breakdown_late}
+  //                 </Typography>
+  //                 <Typography variant="body1">
+  //                   <strong>On Time:</strong> {enrollment.tardiness_breakdown_on_time}
+  //                 </Typography>
+  //                 <Typography variant="body1">
+  //                   <strong>Floating:</strong> {enrollment.tardiness_breakdown_floating}
+  //                 </Typography>
+  //                 <Typography variant="body1">
+  //                   <strong>Total:</strong> {enrollment.tardiness_breakdown_total}
+  //                 </Typography>
+  //               </Box>
+  //             </AccordionDetails>
+  //           </Accordion>
+  //         </Paper>
+  //       ))}
+  //     </Box>
+  //   </Container>
+  // );
+    return (
+      <div>
+        <div>
+          <div className="container">
+            <div className="header">
+              <h1 className="heading">Detailed Student Analytics</h1>
+              <div className="actions">
+                <Input
+                  placeholder="Search students..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="input"
+                />
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  startIcon={<Filter />}
+                  className="button button-outlined"
+                >
+                  Filters
+                </Button>
+              </div>
+            </div>
+          </div>
+
+
+          {enrollments.filter((student) => student.type === 'TeacherEnrollment').map((student) => (
+          <div className='App'>Professor: {student.user.name}</div>
+        ))}
+        </div>
+
+        <Tabs value={selectedTab} onChange={handleTabChange} centered>
+          <Tab label="Individual Analysis" value="individual" />
+          <Tab label="Engagement Trends" value="trends" />
+          <Tab label="Predictive Analytics" value="predictions" />
+        </Tabs>
+  
+        {selectedTab === 'individual' && (
+          <Card variant="outlined" className="shadow-lg">
+            <CardContent className="p-6">
+              <Table>
+                <TableHead>
+                  <TableRow className="bg-gray-200">
+                    {['Name', 'Engagement', 'Attendance', 'Submissions', 'Current Score','Current Grade', 'Risk'].map((header) => (
+                      <TableCell key={header} className="cursor-pointer py-3 px-6 text-left font-semibold">
+                        {header}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {enrollments.filter((student) => student.type === 'StudentEnrollment').map((student) => (
+                    <TableRow
+                      key={student.id}
+                      className="cursor-pointer hover:bg-gray-50"
+                      onClick={() => setSelectedStudent(student)}
+                    >
+                      <TableCell>{student.user.name}</TableCell>
+                      <TableCell>{student.total_activity_time} minutes</TableCell>
+                      <TableCell>{student.attendance}%</TableCell>
+                      <TableCell>{student.submissions}%</TableCell>
+                      <TableCell>{student.grades.current_score}%</TableCell>
+                      <TableCell>{student.grades.current_grade}</TableCell>
+                      <TableCell>
+                        <span className={`px-3 py-1 rounded-full text-xs ${
+                          (student.grades.current_score >= 70)  ? 'grade grade-green' :
+                          (student.grades.current_score >= 41 && student.grades.current_score <= 69) ? 'grade grade-yellow' :
+                          'grade grade-red'
+                        }`}>
+                          {student.grades.current_score}
+                        </span>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+  
+              {selectedStudent && <StudentDetail student={selectedStudent} />}
+            </CardContent>
+          </Card>
+        )}
+  
+        {selectedTab === 'trends' && (
+          <Card variant="outlined" className="shadow-lg">
+            <CardHeader title="Engagement Trends" className="bg-blue-100 font-semibold text-lg p-4" />
+            <CardContent className="p-6">
+              <BarChart width={600} height={400} data={engagementTrends}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="week" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="forum" fill="#8884d8" />
+                <Bar dataKey="video" fill="#82ca9d" />
+                <Bar dataKey="quiz" fill="#ff8042" />
+                <Bar dataKey="assignment" fill="#ff7300" />
+              </BarChart>
+            </CardContent>
+          </Card>
+        )}
+  
+        {selectedTab === 'predictions' && (
+          <Card variant="outlined" className="shadow-lg">
+            <CardHeader title="Predictive Analytics" className="bg-blue-100 font-semibold text-lg p-4" />
+            <CardContent className="p-6">
+              <div className="space-y-6">
+                {predictionData.map((data, index) => (
+                  <div key={index} className="flex justify-between items-center p-4 bg-gray-50 rounded-lg shadow-md">
+                    <div className="font-semibold">Score: {data.score}%</div>
+                    <div className={`text-sm ${data.risk === 'Low' ? 'text-green-600' : data.risk === 'Medium' ? 'text-yellow-600' : 'text-red-600'}`}>
+                      Probability: {data.probability}% - Risk: {data.risk}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    );
+
+  
+};
+
+
+// Main App Component
+const App = () => {
+  const [courses, setCourses] = useState([]);
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch('http://localhost:7001/api/canvas/courses');
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch courses');
-        }
-        const data = await response.json();
-        setCourses(data);
+        const response = await axios.get('http://localhost:7004/api/courses/list');
+        setCourses(response.data);
       } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
+        console.error('Error fetching courses:', error);
       }
     };
 
     fetchCourses();
   }, []);
 
-  // Handle loading state
-  if (loading) return <div>Loading...</div>;
-
-  // Handle error state
-  if (error) return <div>Error: {error.message}</div>;
-
-  // Render courses data
   return (
-    <div>
-      <h1>Canvas Courses</h1>
-      <ul>
-        {courses.map((course) => (
-          <li key={course.id}>{course.name}</li>
-        ))}
-      </ul>
-    </div>
+    <Router>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Canvas Instructure Student Data Visualization
+          </Typography>
+          <Button color="inherit" component={Link} to="/">Home</Button>
+        </Toolbar>
+      </AppBar>
+      <Routes>
+        <Route path="/" element={<CoursesList courses={courses} />} />
+        <Route path="/courses/:id" element={<CourseEnrollments />} />
+      </Routes>
+    </Router>
   );
 };
 
-export default PluginDashboard;
+export default App;
+

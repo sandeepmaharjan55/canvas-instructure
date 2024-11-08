@@ -36,3 +36,83 @@
     transform: rotate(360deg);
   }
 }
+
+.grade {
+  padding-left: 0.75rem; /* px-3 */
+  padding-right: 0.75rem; /* px-3 */
+  padding-top: 0.25rem; /* py-1 */
+  padding-bottom: 0.25rem; /* py-1 */
+  font-size: 0.75rem; /* text-xs */
+  border-radius: 9999px; /* rounded-full */
+}
+
+.grade-green {
+  background-color: #d1fae5; /* bg-green-100 */
+  color: #16a34a; /* text-green-800 */
+}
+
+.grade-yellow {
+  background-color: #fef3c7; /* bg-yellow-100 */
+  color: #f59e0b; /* text-yellow-800 */
+}
+
+.grade-red {
+  background-color: #fee2e2; /* bg-red-100 */
+  color: #b91c1c; /* text-red-800 */
+}
+
+/* Container with full width, max width, and centered */
+.container {
+  width: 100%;
+  max-width: 84rem; /* max-w-7xl */
+  margin: 0 auto; /* mx-auto */
+  padding: 2rem; /* p-8 */
+  space-between: 2rem; /* space-y-8 */
+}
+
+/* Flex container for heading and buttons */
+.header {
+  display: flex;
+  justify-content: space-between; /* justify-between */
+  align-items: center; /* items-center */
+  margin-bottom: 2rem; /* mb-8 */
+}
+
+/* Heading style */
+.heading {
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 600; /* font-semibold */
+  color: #2d3748; /* text-gray-800 */
+}
+
+/* Flex container for search and button */
+.actions {
+  display: flex;
+  gap: 1.5rem; /* gap-6 */
+  align-items: center; /* items-center */
+}
+
+/* Input style */
+.input {
+  width: 20rem; /* w-80 */
+  padding: 0.75rem; /* p-3 */
+  border: 1px solid #e2e8f0; /* border-gray-300 */
+  border-radius: 0.5rem; /* rounded-lg */
+}
+
+/* Button style */
+.button {
+  border: 2px solid #a0aec0; /* border-gray-500 */
+  padding: 0.5rem 1rem; /* px-4 py-2 */
+  border-radius: 0.5rem; /* rounded-lg */
+}
+
+/* Outlined button style (can be customized further) */
+.button-outlined {
+  color: #3182ce; /* primary color */
+  background-color: transparent;
+}
+
+.button-outlined:hover {
+  background-color: #ebf8ff; /* light blue hover effect */
+}

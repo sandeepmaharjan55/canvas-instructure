@@ -3,15 +3,15 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
-
-import PluginDashboard from './App';
+import App from './App';
+import DetailedAnalyticsDashboard from './newOUI';
 // import DetailedAnalyticsDashboard from './newOUI';
 // import DashboardMockup from './newUI';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <PluginDashboard />
+    <App />
     {/* <DetailedAnalyticsDashboard /> */}
     {/* <DashboardMockup /> */}
   </React.StrictMode>

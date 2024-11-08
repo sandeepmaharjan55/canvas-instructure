@@ -5,13 +5,12 @@ const path = require("path");
 require("dotenv").config({
   path: path.join(__dirname, ".env"),
 });
-var bodyParser = require("body-parser");
 
 //import local modules
 
 // define global variables
 const app = express();
-const PORT = process.env.PORT || 7001;
+const PORT = process.env.PORT || 7500;
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");

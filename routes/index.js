@@ -1,5 +1,5 @@
-const canvas = require("./api/canvas");
+const course = require("./api/course");
 
 module.exports = (app) => {
-  app.use("/api/canvas", canvas);
+  app.use("/api/courses", course);
 };
