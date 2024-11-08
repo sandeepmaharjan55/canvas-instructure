@@ -1,0 +1,33 @@
+{
+  "name": "authsetup",
+  "version": "1.0.0",
+  "description": "setup auth base using node js",
+  "main": "server.js",
+  "author": "sandeep maharjan",
+  "license": "ISC",
+  "private": true,
+  "keywords": [
+    "auth setup"
+  ],
+  "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/material": "^6.1.6",
+    "axios": "^1.7.7",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^10.0.0",
+    "eslint-cli": "^1.1.1",
+    "express": "^4.21.1",
+    "express-fileupload": "^1.2.1",
+    "lodash": "^4.17.21",
+    "mongoose": "^6.1.2",
+    "nodemailer": "^6.7.2",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.0",
+    "validator": "^13.7.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.4.1",
+    "nodemon": "^3.1.7"
+  }
+}
