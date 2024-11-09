@@ -223,6 +223,15 @@ const CoursesList = ({ courses }) => {
           <Paper key={course.id} elevation={3} style={{ marginBottom: '1rem' }}>
             <ListItem button component={Link} to={`/courses/${course.id}`}>
               <ListItemText primary={course.name} />
+            {/* </ListItem>
+            <ListItem> */}
+              
+               <span className={` ${
+                          (course.workflow_state ==="available")  ? 'grade grade-green' :
+                          'grade grade-red'
+                        }`}>
+                          <ListItemText secondary={course.workflow_state} />
+               </span>
             </ListItem>
           </Paper>
         ))}
@@ -234,11 +243,11 @@ const CoursesList = ({ courses }) => {
 // Component to fetch and display enrollment data
 // Updated CourseEnrollments component in React
 
-const studentPerformanceData = [
-  { id: 'ST001', name: 'Alice Johnson', engagement: 95, attendance: 98, submissions: 100, grade: 92, risk: 'Low' },
-  { id: 'ST002', name: 'Bob Smith', engagement: 78, attendance: 85, submissions: 90, grade: 85, risk: 'Medium' },
-  { id: 'ST003', name: 'Carol Wilson', engagement: 45, attendance: 60, submissions: 70, grade: 65, risk: 'High' }
-];
+// const studentPerformanceData = [
+//   { id: 'ST001', name: 'Alice Johnson', engagement: 95, attendance: 98, submissions: 100, grade: 92, risk: 'Low' },
+//   { id: 'ST002', name: 'Bob Smith', engagement: 78, attendance: 85, submissions: 90, grade: 85, risk: 'Medium' },
+//   { id: 'ST003', name: 'Carol Wilson', engagement: 45, attendance: 60, submissions: 70, grade: 65, risk: 'High' }
+// ];
 
 const engagementTrends = [
   { week: 'W1', forum: 85, video: 92, quiz: 78, assignment: 88 },
@@ -284,18 +293,19 @@ const CourseEnrollments = () => {
   const StudentDetail = ({ student }) => (
     <Card variant="outlined" className="mt-6 shadow-lg">
       <CardHeader
-        title={`Student Detail: ${student.name}`}
+        title={`Student Detail: ${student.user.name}`}
         className="bg-blue-100 font-semibold text-lg p-4"
       />
       <CardContent className="p-6">
         <div>
           {/* Performance Bar Chart */}
           <div>
+
             <BarChart width={300} height={300} data={[
-              { subject: 'Engagement', score: student.engagement },
-              { subject: 'Attendance', score: student.attendance },
-              { subject: 'Submissions', score: student.submissions },
-              { subject: 'Grade', score: student.grade }
+              { subject: 'Engagement', score: student.total_activity_time },
+              { subject: 'Grade', score: student.grades.current_score },
+              { subject: 'Discussion', score: student.discussion_Count }
+              
             ]}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="subject" />
@@ -310,11 +320,10 @@ const CourseEnrollments = () => {
             <h4>Key Metrics</h4>
             <div>
               {[
-                { label: 'Engagement Score', value: `${student.engagement}%` },
-                { label: 'Attendance Rate', value: `${student.attendance}%` },
-                { label: 'Submission Rate', value: `${student.submissions}%` },
-                { label: 'Current Grade', value: `${student.grade}%` },
-                { label: 'Risk Level', value: student.risk }
+                { label: 'Engagement Score', value: `${student.total_activity_time} minutes` },
+                { label: 'Current Grade Score', value: `${student.grades.current_score }%` },
+                { label: 'Risk Level', value: (student.grades.current_score>=70?"Low":
+                  (student.grades.current_score>=41 && student.grades.current_score<=69)?"Medium":"High")}
               ].map((metric, index) => (
                 <div key={index}>
                   <div>{metric.label}</div>
@@ -409,8 +418,7 @@ const CourseEnrollments = () => {
   //   </Container>
   // );
     return (
-      <div>
-        <div>
+      <div>    
           <div className="container">
             <div className="header">
               <h1 className="heading">Detailed Student Analytics</h1>
@@ -437,7 +445,7 @@ const CourseEnrollments = () => {
           {enrollments.filter((student) => student.type === 'TeacherEnrollment').map((student) => (
           <div className='App'>Professor: {student.user.name}</div>
         ))}
-        </div>
+       
 
         <Tabs value={selectedTab} onChange={handleTabChange} centered>
           <Tab label="Individual Analysis" value="individual" />
@@ -451,7 +459,7 @@ const CourseEnrollments = () => {
               <Table>
                 <TableHead>
                   <TableRow className="bg-gray-200">
-                    {['Name', 'Engagement', 'Attendance', 'Submissions', 'Current Score','Current Grade', 'Risk'].map((header) => (
+                    {['Name', 'Engagement', 'Attendance', 'Max Participations','Participations lvl','Max Page Views', 'Page Views lvl','Discussion','Current Score','Current Grade', 'Risk'].map((header) => (
                       <TableCell key={header} className="cursor-pointer py-3 px-6 text-left font-semibold">
                         {header}
                       </TableCell>
@@ -468,7 +476,14 @@ const CourseEnrollments = () => {
                       <TableCell>{student.user.name}</TableCell>
                       <TableCell>{student.total_activity_time} minutes</TableCell>
                       <TableCell>{student.attendance}%</TableCell>
-                      <TableCell>{student.submissions}%</TableCell>
+
+                      <TableCell>{student.max_participation_count}</TableCell>
+                      <TableCell>{student.participations_level}</TableCell>
+
+                      <TableCell>{student.max_page_views}</TableCell>
+                      <TableCell>{student.page_views_level}</TableCell>
+
+                      <TableCell>{student.discussion_Count}</TableCell>
                       <TableCell>{student.grades.current_score}%</TableCell>
                       <TableCell>{student.grades.current_grade}</TableCell>
                       <TableCell>

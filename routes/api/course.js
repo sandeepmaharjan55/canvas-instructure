@@ -51,11 +51,33 @@ router.get('/:id', async (req, res) => {
 
     const analyticsData = analyticsResponse.data;
 
+    // Fetch analytics data for more student discussion posts
+    const discussionResponse = await axios.get(`${CANVAS_API_BASE_URL}/courses/${id}/discussion_topics`, {
+      headers: { 'Authorization': `Bearer ${process.env.REACT_APP_CANVAS_TOKEN}`,'Accept': 'application/json', }
+    });
+    const discussionData = discussionResponse.data;
+    const postCounts = {};
+    discussionData.forEach((entry) => {
+      const userId = entry.author.id;
+      postCounts[userId] = (postCounts[userId] || 0) + 1;
+    });
+
+
+    // let maxActivityTime = 0;
+
     // Merge the data by matching student IDs
     const detailedEnrollments = enrollments.map((enrollment) => {
       const studentAnalytics = analyticsData.find(
         (analytics) => analytics.id === enrollment.user_id
       );
+  
+     
+      // if (enrollment.total_activity_time > maxActivityTime) {
+      //   maxActivityTime = enrollment.total_activity_time;
+      // }
+      // const newActivityTime = ((enrollment.total_activity_time / maxActivityTime) * 100).toFixed(2);
+// console.log(enrollment.total_activity_time);
+
       return {
         ...enrollment,
         page_views: studentAnalytics?.page_views ?? 0,
@@ -71,6 +93,10 @@ router.get('/:id', async (req, res) => {
         tardiness_breakdown_on_time: studentAnalytics?.tardiness_breakdown.on_time ?? 0,
         tardiness_breakdown_floating: studentAnalytics?.tardiness_breakdown.floating ?? 0,
         tardiness_breakdown_total: studentAnalytics?.tardiness_breakdown.total ?? 0,
+
+    //  discussion_Count: discussionAnalytics?postCounts:0,
+        discussion_Count: postCounts[enrollment.user_id],
+        // engagementPer: newActivityTime,
       };
     });
     res.json(detailedEnrollments);
