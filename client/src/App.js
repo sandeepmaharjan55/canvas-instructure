@@ -301,10 +301,13 @@ const CourseEnrollments = () => {
           {/* Performance Bar Chart */}
           <div>
 
-            <BarChart width={300} height={300} data={[
-              { subject: 'Engagement', score: student.total_activity_time },
+            <BarChart width={1200} height={400} data={[
+              { subject: 'Total Activity', score: student.activity_Time_Percent },
               { subject: 'Grade', score: student.grades.current_score },
-              { subject: 'Discussion', score: student.discussion_Count }
+              { subject: 'Attendance', score: student.attendance_Percentage },
+              { subject: 'Discussion', score: student.discussion_Count },
+              { subject: 'Participation Level', score: student.participations_level },
+              { subject: 'Max Page Views', score: student.max_page_views },
               
             ]}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -320,8 +323,11 @@ const CourseEnrollments = () => {
             <h4>Key Metrics</h4>
             <div>
               {[
-                { label: 'Engagement Score', value: `${student.total_activity_time} minutes` },
+                { label: 'Total Activity', value: `${student.activity_Time_Percent} %` },
                 { label: 'Current Grade Score', value: `${student.grades.current_score }%` },
+                { label: 'Attendance', value: `${student.attendance_Percentage }%` },
+                { label: 'Participation Level', value: `${student.participations_level }` },
+                { label: 'Max Page Views', value: `${student.max_page_views }` },
                 { label: 'Risk Level', value: (student.grades.current_score>=70?"Low":
                   (student.grades.current_score>=41 && student.grades.current_score<=69)?"Medium":"High")}
               ].map((metric, index) => (
@@ -343,80 +349,6 @@ const CourseEnrollments = () => {
       </Box>
     );
   }
-
-  // return (
-  //   <Container maxWidth="md">
-  //     <Typography variant="h5" component="h2" gutterBottom>
-  //       Enrollments for Course ID: {id}
-  //     </Typography>
-  //     <Box>
-  //       {enrollments.map((enrollment) => (
-  //         <Paper key={enrollment.id} elevation={3} style={{ marginBottom: '1rem', padding: '1rem' }}>
-  //           <Accordion>
-  //             <AccordionSummary
-  //               aria-controls={`panel-${enrollment.id}-content`}
-  //               id={`panel-${enrollment.id}-header`}
-  //             >
-  //               <Typography>{enrollment.type==="StudentEnrollment"?"Student":"Teacher"}: {enrollment.user.name}</Typography>
-  //             </AccordionSummary>
-  //             <AccordionDetails>
-  //               {/* Accordion Details (List of Enrollment Details) */}
-  //               <Box>
-  //                 <Typography variant="body1">
-  //                   <strong>Enrollment State:</strong> {enrollment.enrollment_state}
-  //                 </Typography>
-  //                 <Typography variant="body1">
-  //                   <strong>Last Activity:</strong> {new Date(enrollment.last_activity_at).toLocaleString()}
-  //                 </Typography>
-  //                 <Typography variant="body1">
-  //                   <strong>Total Activity Time:</strong> {`${enrollment.total_activity_time ?? 0} minutes`}
-  //                 </Typography>
-  //                 <Typography variant="body1">
-  //                   <strong>Page Views:</strong> {enrollment.page_views}
-  //                 </Typography>
-  //                 <Typography variant="body1">
-  //                   <strong>Max Page Views:</strong> {enrollment.max_page_views}
-  //                 </Typography>
-
-  //                 {/* Additional Student Analytics Information */}
-  //                 <Typography variant="body1">
-  //                   <strong>Participation:</strong> {enrollment.participation_count}
-  //                 </Typography>
-  //                 <Typography variant="body1">
-  //                   <strong>Max Participation:</strong> {enrollment.max_participation_count}
-  //                 </Typography>
-  //                 <Typography variant="body1">
-  //                   <strong>Participation Level:</strong> {enrollment.participation_level}
-  //                 </Typography>
-                  
-  //                  {/* Additional Student Analytics Information  Tardiness*/}
-                  
-  //                 <Typography variant="body1">
-  //                   <strong>Tardiness Data Below</strong>
-  //                 </Typography>
-  //                 <Typography variant="body1">
-  //                   <strong>Missing:</strong> {enrollment.tardiness_breakdown_missing}
-  //                 </Typography>
-  //                 <Typography variant="body1">
-  //                   <strong>Late:</strong> {enrollment.tardiness_breakdown_late}
-  //                 </Typography>
-  //                 <Typography variant="body1">
-  //                   <strong>On Time:</strong> {enrollment.tardiness_breakdown_on_time}
-  //                 </Typography>
-  //                 <Typography variant="body1">
-  //                   <strong>Floating:</strong> {enrollment.tardiness_breakdown_floating}
-  //                 </Typography>
-  //                 <Typography variant="body1">
-  //                   <strong>Total:</strong> {enrollment.tardiness_breakdown_total}
-  //                 </Typography>
-  //               </Box>
-  //             </AccordionDetails>
-  //           </Accordion>
-  //         </Paper>
-  //       ))}
-  //     </Box>
-  //   </Container>
-  // );
     return (
       <div>    
           <div className="container">
@@ -459,7 +391,7 @@ const CourseEnrollments = () => {
               <Table>
                 <TableHead>
                   <TableRow className="bg-gray-200">
-                    {['Name', 'Engagement', 'Attendance', 'Max Participations','Participations lvl','Max Page Views', 'Page Views lvl','Discussion','Current Score','Current Grade', 'Risk'].map((header) => (
+                    {['Name', 'Total Activity', 'Attendance', 'Max Participations','Participations lvl','Max Page Views', 'Page Views lvl','Discussion','Current Score','Current Grade', 'Risk'].map((header) => (
                       <TableCell key={header} className="cursor-pointer py-3 px-6 text-left font-semibold">
                         {header}
                       </TableCell>
@@ -474,8 +406,8 @@ const CourseEnrollments = () => {
                       onClick={() => setSelectedStudent(student)}
                     >
                       <TableCell>{student.user.name}</TableCell>
-                      <TableCell>{student.total_activity_time} minutes</TableCell>
-                      <TableCell>{student.attendance}%</TableCell>
+                      <TableCell>{student.activity_Time_Percent}%</TableCell>
+                      <TableCell>{student.attendance_Percentage}%</TableCell>
 
                       <TableCell>{student.max_participation_count}</TableCell>
                       <TableCell>{student.participations_level}</TableCell>
