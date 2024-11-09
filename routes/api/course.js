@@ -75,21 +75,22 @@ router.get('/:id', async (req, res) => {
     const studentRollAnalytics = assignmentData.find(
       (analytics) => analytics.name === "Roll Call Attendance"
     );
-    const rollCallDataResponse = await axios.get(`${CANVAS_API_BASE_URL}/courses/${id}/assignments/${studentRollAnalytics.id}/submissions`, {
+  
+    const rollCallDataResponse = studentRollAnalytics?await axios.get(`${CANVAS_API_BASE_URL}/courses/${id}/assignments/${studentRollAnalytics.id}/submissions`, {
       headers: { 'Authorization': `Bearer ${process.env.REACT_APP_CANVAS_TOKEN}`,'Accept': 'application/json', }
-    });
-    const rollCallData = rollCallDataResponse.data;
-
+    }):null;
+      const rollCallData = rollCallDataResponse?.data || null;
 
     // Merge the data by matching student IDs
     const detailedEnrollments = enrollments.map((enrollment) => {
       const studentAnalytics = analyticsData.find(
         (analytics) => analytics.id === enrollment.user_id
       );
-      const rollCallAnalytics = rollCallData.find(
+      const rollCallAnalytics = rollCallData?rollCallData.find(
         (analytics) => analytics.user_id === enrollment.user_id
-      );
-      const activityPData = ((enrollment.total_activity_time / maxActivityTime) * 100).toFixed(2);
+      ):null;
+      const activityPData = enrollment?((enrollment.total_activity_time / maxActivityTime) * 100).toFixed(2):0;
+     
       return {
         ...enrollment,
         page_views: studentAnalytics?.page_views ?? 0,
@@ -106,7 +107,7 @@ router.get('/:id', async (req, res) => {
         tardiness_breakdown_floating: studentAnalytics?.tardiness_breakdown.floating ?? 0,
         tardiness_breakdown_total: studentAnalytics?.tardiness_breakdown.total ?? 0,
 
-        discussion_Count: postCounts[enrollment.user_id],
+        discussion_Count: postCounts[enrollment.user_id]?postCounts[enrollment.user_id]:0,
 
         attendance_Percentage: rollCallAnalytics?.score ?? 0,
         activity_Time_Percent: enrollment?activityPData:0,

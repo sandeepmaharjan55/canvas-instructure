@@ -4,16 +4,11 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 
 import App from './App';
-import DetailedAnalyticsDashboard from './newOUI';
-// import DetailedAnalyticsDashboard from './newOUI';
-// import DashboardMockup from './newUI';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <App />
-    {/* <DetailedAnalyticsDashboard /> */}
-    {/* <DashboardMockup /> */}
   </React.StrictMode>
 );
 
