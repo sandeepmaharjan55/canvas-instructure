@@ -1,194 +1,6 @@
-// import React, { useEffect, useState } from 'react';
-// import { BrowserRouter as Router, Route, Link, Routes, useParams } from 'react-router-dom';
-// import axios from 'axios';
-// import {
-//   AppBar,
-//   Toolbar,
-//   Typography,
-//   Container,
-//   List,
-//   ListItem,
-//   ListItemText,
-//   CircularProgress,
-//   Box,
-//   Paper,
-//   Button,
-//   Accordion,
-//   AccordionSummary,
-//   AccordionDetails,
-// } from '@mui/material';
-
-
-// // Main component displaying list of courses
-// const CoursesList = ({ courses }) => {
-//   return (
-//     <Container maxWidth="md">
-//       <Typography variant="h4" component="h1" gutterBottom>
-//         Canvas Courses
-//       </Typography>
-//       <List>
-//         {courses.map((course) => (
-//           <Paper key={course.id} elevation={3} style={{ marginBottom: '1rem' }}>
-//             <ListItem button component={Link} to={`/courses/${course.id}`}>
-//               <ListItemText primary={course.name} />
-//             </ListItem>
-//           </Paper>
-//         ))}
-//       </List>
-//     </Container>
-//   );
-// };
-
-// // Component to fetch and display enrollment data
-// // Updated CourseEnrollments component in React
-// const CourseEnrollments = () => {
-//   const { id } = useParams();
-//   const [enrollments, setEnrollments] = useState([]);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const fetchEnrollments = async () => {
-//       try {
-//         const response = await axios.get(`http://localhost:7004/api/courses/${id}`);
-//         setEnrollments(response.data);
-//       } catch (error) {
-//         console.error('Error fetching enrollments:', error);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchEnrollments();
-//   }, [id]);
-
-//   if (loading) {
-//     return (
-//       <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
-//         <CircularProgress />
-//       </Box>
-//     );
-//   }
-
-//   return (
-//     <Container maxWidth="md">
-//       <Typography variant="h5" component="h2" gutterBottom>
-//         Enrollments for Course ID: {id}
-//       </Typography>
-//       <Box>
-//         {enrollments.map((enrollment) => (
-//           <Paper key={enrollment.id} elevation={3} style={{ marginBottom: '1rem', padding: '1rem' }}>
-//             <Accordion>
-//               <AccordionSummary
-//                 aria-controls={`panel-${enrollment.id}-content`}
-//                 id={`panel-${enrollment.id}-header`}
-//               >
-//                 <Typography>{enrollment.type==="StudentEnrollment"?"Student":"Teacher"}: {enrollment.user.name}</Typography>
-//               </AccordionSummary>
-//               <AccordionDetails>
-//                 {/* Accordion Details (List of Enrollment Details) */}
-//                 <Box>
-//                   <Typography variant="body1">
-//                     <strong>Enrollment State:</strong> {enrollment.enrollment_state}
-//                   </Typography>
-//                   <Typography variant="body1">
-//                     <strong>Last Activity:</strong> {new Date(enrollment.last_activity_at).toLocaleString()}
-//                   </Typography>
-//                   <Typography variant="body1">
-//                     <strong>Total Activity Time:</strong> {`${enrollment.total_activity_time ?? 0} minutes`}
-//                   </Typography>
-//                   <Typography variant="body1">
-//                     <strong>Page Views:</strong> {enrollment.page_views}
-//                   </Typography>
-//                   <Typography variant="body1">
-//                     <strong>Max Page Views:</strong> {enrollment.max_page_views}
-//                   </Typography>
-
-//                   {/* Additional Student Analytics Information */}
-//                   <Typography variant="body1">
-//                     <strong>Participation:</strong> {enrollment.participation_count}
-//                   </Typography>
-//                   <Typography variant="body1">
-//                     <strong>Max Participation:</strong> {enrollment.max_participation_count}
-//                   </Typography>
-//                   <Typography variant="body1">
-//                     <strong>Participation Level:</strong> {enrollment.participation_level}
-//                   </Typography>
-                  
-//                    {/* Additional Student Analytics Information  Tardiness*/}
-                  
-//                   <Typography variant="body1">
-//                     <strong>Tardiness Data Below</strong>
-//                   </Typography>
-//                   <Typography variant="body1">
-//                     <strong>Missing:</strong> {enrollment.tardiness_breakdown_missing}
-//                   </Typography>
-//                   <Typography variant="body1">
-//                     <strong>Late:</strong> {enrollment.tardiness_breakdown_late}
-//                   </Typography>
-//                   <Typography variant="body1">
-//                     <strong>On Time:</strong> {enrollment.tardiness_breakdown_on_time}
-//                   </Typography>
-//                   <Typography variant="body1">
-//                     <strong>Floating:</strong> {enrollment.tardiness_breakdown_floating}
-//                   </Typography>
-//                   <Typography variant="body1">
-//                     <strong>Total:</strong> {enrollment.tardiness_breakdown_total}
-//                   </Typography>
-//                 </Box>
-//               </AccordionDetails>
-//             </Accordion>
-//           </Paper>
-//         ))}
-//       </Box>
-//     </Container>
-//   );
-// };
-
-
-// // Main App Component
-// const App = () => {
-//   const [courses, setCourses] = useState([]);
-
-//   useEffect(() => {
-//     const fetchCourses = async () => {
-//       try {
-//         const response = await axios.get('http://localhost:7004/api/courses/list');
-//         setCourses(response.data);
-//       } catch (error) {
-//         console.error('Error fetching courses:', error);
-//       }
-//     };
-
-//     fetchCourses();
-//   }, []);
-
-//   return (
-//     <Router>
-//       <AppBar position="static">
-//         <Toolbar>
-//           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-//             Canvas Instructure Student Data Visualization
-//           </Typography>
-//           <Button color="inherit" component={Link} to="/">Home</Button>
-//         </Toolbar>
-//       </AppBar>
-//       <Routes>
-//         <Route path="/" element={<CoursesList courses={courses} />} />
-//         <Route path="/courses/:id" element={<CourseEnrollments />} />
-//       </Routes>
-//     </Router>
-//   );
-// };
-
-// export default App;
-
-
-
-
-
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Link, Routes, useParams } from 'react-router-dom';
-import axios from 'axios';
+import Axios from 'axios';
 import {
   AppBar,
   Toolbar,
@@ -210,6 +22,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'rec
 import { Card, CardHeader, CardContent, Input, Table, TableBody, TableCell, TableHead, TableRow, Tabs, Tab } from '@mui/material';
 import { Filter, ArrowUp, ArrowDown } from 'lucide-react';
 import './App.css';
+const NodeServer_API_BASE_URL = 'http://localhost:7004/';
 
 // Main component displaying list of courses
 const CoursesList = ({ courses }) => {
@@ -240,14 +53,6 @@ const CoursesList = ({ courses }) => {
   );
 };
 
-// Component to fetch and display enrollment data
-// Updated CourseEnrollments component in React
-
-// const studentPerformanceData = [
-//   { id: 'ST001', name: 'Alice Johnson', engagement: 95, attendance: 98, submissions: 100, grade: 92, risk: 'Low' },
-//   { id: 'ST002', name: 'Bob Smith', engagement: 78, attendance: 85, submissions: 90, grade: 85, risk: 'Medium' },
-//   { id: 'ST003', name: 'Carol Wilson', engagement: 45, attendance: 60, submissions: 70, grade: 65, risk: 'High' }
-// ];
 
 const engagementTrends = [
   { week: 'W1', forum: 85, video: 92, quiz: 78, assignment: 88 },
@@ -265,6 +70,7 @@ const predictionData = [
 const CourseEnrollments = () => {
   const { id } = useParams();
   const [enrollments, setEnrollments] = useState([]);
+  const [predictions, setPrediction] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedStudent, setSelectedStudent] = useState(null);
 
@@ -278,8 +84,26 @@ const CourseEnrollments = () => {
   useEffect(() => {
     const fetchEnrollments = async () => {
       try {
-        const response = await axios.get(`http://localhost:7004/api/courses/${id}`);
+        const response = await Axios.get(`${NodeServer_API_BASE_URL}api/courses/${id}`);
+        //console.log(response.data);
         setEnrollments(response.data);
+        
+        // const responsePrediction = await Axios.post(`${NodeServer_API_BASE_URL}api/predictions/predict`,
+        //   {
+        //     totalActivity: 1000,
+        //     attendance: 30,
+        //     participation: 10,
+        //     pageViews: 10,
+        //     discussionCount: 2,
+        //     currentGrade: 40,
+        //   },
+        //   {
+        //     headers: {
+        //       'Content-Type': 'application/json', // Set the content type to JSON
+        //     },
+        //   }
+        // );
+        // setPrediction(responsePrediction.data);
       } catch (error) {
         console.error('Error fetching enrollments:', error);
       } finally {
@@ -304,11 +128,11 @@ const CourseEnrollments = () => {
             <BarChart width={1200} height={400} data={[
               { subject: 'Total Activity', score: student.activity_Time_Percent },
               { subject: 'Grade', score: student.grades.current_score },
-              { subject: 'Attendance', score: student.attendance_Percentage },
-              { subject: 'Discussion', score: student.discussion_Count },
-              { subject: 'Participation Level', score: student.participations_level },
-              { subject: 'Max Page Views', score: student.max_page_views },
-              
+              { subject: 'Attendance', score: (student.attendance_Percentage).toFixed(2)  },
+              { subject: 'Discussion', score: ((student.discussion_Count/student.max_Discussion)*100).toFixed(2)},
+              { subject: 'Participation', score: ((student.participation_count/student.max_participation_count)*100).toFixed(2)} ,
+              { subject: 'Page Views', score: ((student.page_views/student.max_page_views)*100).toFixed(2)} ,
+      
             ]}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="subject" />
@@ -324,10 +148,12 @@ const CourseEnrollments = () => {
             <div>
               {[
                 { label: 'Total Activity', value: `${student.activity_Time_Percent} %` },
-                { label: 'Current Grade Score', value: `${student.grades.current_score }%` },
-                { label: 'Attendance', value: `${student.attendance_Percentage }%` },
-                { label: 'Participation Level', value: `${student.participations_level }` },
-                { label: 'Max Page Views', value: `${student.max_page_views }` },
+                { label: 'Current Grade', value: `${student.grades.current_score }%` },
+                { label: 'Attendance', value: `${(student.attendance_Percentage).toFixed(2) }%` },
+                { label: 'Discussion', value: `${((student.discussion_Count/student.max_Discussion)*100).toFixed(2)}%` },
+                { label: 'Page Views', value: `${((student.page_views/student.max_page_views)*100).toFixed(2) }%` },
+                { label: 'Participation', value: `${((student.participation_count/student.max_participation_count)*100).toFixed(2)}%` },
+                { label: 'Page Views', value: `${((student.page_views/student.max_page_views)*100).toFixed(2) }` },
                 { label: 'Risk Level', value: (student.grades.current_score>=70?"Low":
                   (student.grades.current_score>=41 && student.grades.current_score<=69)?"Medium":"High")}
               ].map((metric, index) => (
@@ -373,10 +199,11 @@ const CourseEnrollments = () => {
             </div>
           </div>
 
-
+      
           {enrollments.filter((student) => student.type === 'TeacherEnrollment').map((student) => (
-          <div className='App'>Professor: {student.user.name}</div>
+          <div className='App' key={student.id}>Professor: {student.user.name}</div>
         ))}
+  
        
 
         <Tabs value={selectedTab} onChange={handleTabChange} centered>
@@ -391,7 +218,7 @@ const CourseEnrollments = () => {
               <Table>
                 <TableHead>
                   <TableRow className="bg-gray-200">
-                    {['Name', 'Total Activity', 'Attendance', 'Max Participations','Participations lvl','Max Page Views', 'Page Views lvl','Discussion','Current Score','Current Grade', 'Risk'].map((header) => (
+                    {['Name', 'Total Activity', 'Attendance', 'Participation','Page Views','Discussion','Discussion Rate','Current Grade', 'Current Score', "Future Result Prediction"].map((header) => (
                       <TableCell key={header} className="cursor-pointer py-3 px-6 text-left font-semibold">
                         {header}
                       </TableCell>
@@ -407,16 +234,19 @@ const CourseEnrollments = () => {
                     >
                       <TableCell>{student.user.name}</TableCell>
                       <TableCell>{student.activity_Time_Percent}%</TableCell>
-                      <TableCell>{student.attendance_Percentage}%</TableCell>
+                      <TableCell>{(student.attendance_Percentage).toFixed(2) }%</TableCell>
+                      
+                      <TableCell>{((student.participation_count/student.max_participation_count)*100).toFixed(2)}%</TableCell>
+                      {/* <TableCell>{student.max_participation_count}</TableCell> */}
+                 
 
-                      <TableCell>{student.max_participation_count}</TableCell>
-                      <TableCell>{student.participations_level}</TableCell>
-
-                      <TableCell>{student.max_page_views}</TableCell>
-                      <TableCell>{student.page_views_level}</TableCell>
+                      <TableCell>{((student.page_views/student.max_page_views)*100).toFixed(2)}%</TableCell>
+                      
+                     
 
                       <TableCell>{student.discussion_Count}</TableCell>
-                      <TableCell>{student.grades.current_score}%</TableCell>
+                      <TableCell>{((student.discussion_Count/student.max_Discussion)*100).toFixed(2)}%</TableCell>
+                      
                       <TableCell>{student.grades.current_grade}</TableCell>
                       <TableCell>
                         <span className={`px-3 py-1 rounded-full text-xs ${
@@ -424,9 +254,12 @@ const CourseEnrollments = () => {
                           (student.grades.current_score >= 41 && student.grades.current_score <= 69) ? 'grade grade-yellow' :
                           'grade grade-red'
                         }`}>
-                          {student.grades.current_score}
+                          {student.grades.current_score}%
                         </span>
                       </TableCell>
+                      {/* edit here for final */}
+
+                      <TableCell>{student.predicted_Data}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -487,7 +320,7 @@ const App = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get('http://localhost:7004/api/courses/list');
+        const response = await Axios.get(`${NodeServer_API_BASE_URL}api/courses/list`);
         setCourses(response.data);
       } catch (error) {
         console.error('Error fetching courses:', error);
