@@ -26,10 +26,10 @@ const myNetwork = new Network({
 
 // Training data (e.g., Total Activity, Attendance, Participation, Page Views, Discussion, Current Grade Score)
 const trainingData = [
-  { input: [3000, 90, 150, 100, 10, 90], output: [1] },  // Example student: Pass
-  { input: [12, 80, 60, 60, 1, 40], output: [0] },  // Example student: Fail
-  { input: [4000, 95, 205, 11, 80], output: [1] },  // Example student: Pass
-  { input: [5, 60, 50, 50, 1, 50], output: [0] },   // Example student: Fail
+  { input: [2500, 80, 150, 100, 10, 90], output: [1] },  // Example student: Pass
+  { input: [12, 80, 60, 60, 1, 40], output: [0] },      // Example student: Fail
+  { input: [4000, 95, 205, 11, 80], output: [1] },      // Example student: Pass
+  { input: [5, 60, 50, 50, 1, 50], output: [0] },       // Example student: Fail
 ];
 
 // Training the network
@@ -49,6 +49,7 @@ trainNetwork();
 
 // Prediction endpoint
 router.post('/predict', (req, res) => {
+    console.log(req.body);
   const { totalActivity, attendance, participation, pageViews, discussionCount, currentGradeScore } = req.body;
 
   // Ensure the input data is valid

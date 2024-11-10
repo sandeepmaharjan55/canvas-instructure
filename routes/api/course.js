@@ -147,6 +147,7 @@ router.get('/:id', async (req, res) => {
       const rollCallAnalytics = rollCallData?rollCallData.find(
         (analytics) => analytics.user_id === enrollment.user_id
       ):null;
+
       const activityPData = enrollment?((enrollment.total_activity_time / maxActivityTime) * 100).toFixed(2):0;
      
       // const assignmentAnalytics = assignmentSubmissions.find(
@@ -160,16 +161,22 @@ router.get('/:id', async (req, res) => {
       //postCounts[a.user_id]?postCounts[a.user_id]:0
       //postCounts[a.user_id]?postCounts[a.user_id]:0
       // console.log(assignmentAnalytics);
+
+      const participationPercent=(((studentAnalytics?.participations ?? 0)/(studentAnalytics?.max_participations ?? 0))*100).toFixed(2);
+      const discussionPercent=((( postCounts[enrollment.user_id]?postCounts[enrollment.user_id]:0)/maxDiscussionCount)*100).toFixed(2);
+
+      const pageViewsPercent=(((studentAnalytics?.page_views ?? 0)/(studentAnalytics?.max_page_views ?? 0))*100).toFixed(2);
       
+      console.log(discussionPercent );
       return axios.post(
         `${NodeServer_API_BASE_URL}api/predictions/predict`, 
         {
-          totalActivity: enrollment.total_activity_time,
+          totalActivity: enrollment?activityPData:0,
           attendance: rollCallAnalytics?.score ?? 0,
-          participation: studentAnalytics?.participations ?? 0,
-          pageViews: studentAnalytics?.page_views ?? 0,
-          discussionCount: postCounts[enrollment.user_id] ?? 0,
-          currentGradeScore: enrollment.current_grade ?? 0,
+          participation: participationPercent?participationPercent:0,
+          pageViews: pageViewsPercent?pageViewsPercent:0,
+          discussionCount: discussionPercent?discussionPercent:0,
+          currentGradeScore: enrollment?.grades?.current_score ?? 0,
         },
         {
           headers: {
@@ -181,12 +188,14 @@ router.get('/:id', async (req, res) => {
         //console.log('Prediction response hawa :', response.data.prediction);
         return {
           ...enrollment,
-          page_views: studentAnalytics?.page_views ?? 0,
-          max_page_views: studentAnalytics?.max_page_views ?? 0,
+          // page_views: studentAnalytics?.page_views ?? 0,
+          // max_page_views: studentAnalytics?.max_page_views ?? 0,
+          page_Views_Percent: pageViewsPercent?pageViewsPercent:0,
           // page_views_level:studentAnalytics?.page_views_level ?? 0,
           
-          participation_count: studentAnalytics?.participations ?? 0,
-          max_participation_count: studentAnalytics?.max_participations ?? 0,
+          // participation_count: studentAnalytics?.participations ?? 0,
+          // max_participation_count: studentAnalytics?.max_participations ?? 0,
+          participation_percent: participationPercent? participationPercent:0,
           // participations_level: studentAnalytics?.participations_level ?? 0,
   
           tardiness_breakdown_missing: studentAnalytics?.tardiness_breakdown.missing ?? 0,
@@ -195,8 +204,10 @@ router.get('/:id', async (req, res) => {
           tardiness_breakdown_floating: studentAnalytics?.tardiness_breakdown.floating ?? 0,
           tardiness_breakdown_total: studentAnalytics?.tardiness_breakdown.total ?? 0,
   
-          discussion_Count: postCounts[enrollment.user_id]?postCounts[enrollment.user_id]:0,
-          max_Discussion: maxDiscussionCount?maxDiscussionCount:0,
+          // discussion_Count: postCounts[enrollment.user_id]?postCounts[enrollment.user_id]:0,
+          // max_Discussion: maxDiscussionCount?maxDiscussionCount:0,
+          discussion_Percent: discussionPercent?discussionPercent:0,
+
           attendance_Percentage: rollCallAnalytics?.score ?? 0,
           activity_Time_Percent: enrollment?activityPData:0,
           predicted_Data: enrollment?response.data.prediction:null,

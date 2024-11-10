@@ -129,9 +129,9 @@ const CourseEnrollments = () => {
               { subject: 'Total Activity', score: student.activity_Time_Percent },
               { subject: 'Grade', score: student.grades.current_score },
               { subject: 'Attendance', score: (student.attendance_Percentage).toFixed(2)  },
-              { subject: 'Discussion', score: ((student.discussion_Count/student.max_Discussion)*100).toFixed(2)},
-              { subject: 'Participation', score: ((student.participation_count/student.max_participation_count)*100).toFixed(2)} ,
-              { subject: 'Page Views', score: ((student.page_views/student.max_page_views)*100).toFixed(2)} ,
+              { subject: 'Discussion', score: student.discussion_Percent},
+              { subject: 'Participation', score: student.participation_percent} ,
+              { subject: 'Page Views', score: student.page_Views_Percent} ,
       
             ]}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -150,10 +150,10 @@ const CourseEnrollments = () => {
                 { label: 'Total Activity', value: `${student.activity_Time_Percent} %` },
                 { label: 'Current Grade', value: `${student.grades.current_score }%` },
                 { label: 'Attendance', value: `${(student.attendance_Percentage).toFixed(2) }%` },
-                { label: 'Discussion', value: `${((student.discussion_Count/student.max_Discussion)*100).toFixed(2)}%` },
-                { label: 'Page Views', value: `${((student.page_views/student.max_page_views)*100).toFixed(2) }%` },
-                { label: 'Participation', value: `${((student.participation_count/student.max_participation_count)*100).toFixed(2)}%` },
-                { label: 'Page Views', value: `${((student.page_views/student.max_page_views)*100).toFixed(2) }` },
+                { label: 'Discussion', value: `${student.discussion_Percent}%` },
+                { label: 'Page Views', value: `${student.page_Views_Percent }%` },
+                { label: 'Participation', value: `${student.participation_percent}%` },
+                { label: 'Page Views', value: `${student.page_Views_Percent }` },
                 { label: 'Risk Level', value: (student.grades.current_score>=70?"Low":
                   (student.grades.current_score>=41 && student.grades.current_score<=69)?"Medium":"High")}
               ].map((metric, index) => (
@@ -218,7 +218,7 @@ const CourseEnrollments = () => {
               <Table>
                 <TableHead>
                   <TableRow className="bg-gray-200">
-                    {['Name', 'Total Activity', 'Attendance', 'Participation','Page Views','Discussion','Discussion Rate','Current Grade', 'Current Score', "Future Result Prediction"].map((header) => (
+                    {['Name', 'Total Activity', 'Attendance', 'Participation','Page Views','Discussion Post Rate','Current Grade', 'Current Score', "Future Result Prediction"].map((header) => (
                       <TableCell key={header} className="cursor-pointer py-3 px-6 text-left font-semibold">
                         {header}
                       </TableCell>
@@ -236,16 +236,16 @@ const CourseEnrollments = () => {
                       <TableCell>{student.activity_Time_Percent}%</TableCell>
                       <TableCell>{(student.attendance_Percentage).toFixed(2) }%</TableCell>
                       
-                      <TableCell>{((student.participation_count/student.max_participation_count)*100).toFixed(2)}%</TableCell>
+                      <TableCell>{student.participation_percent}%</TableCell>
                       {/* <TableCell>{student.max_participation_count}</TableCell> */}
                  
 
-                      <TableCell>{((student.page_views/student.max_page_views)*100).toFixed(2)}%</TableCell>
+                      <TableCell>{student.page_Views_Percent}%</TableCell>
                       
                      
 
-                      <TableCell>{student.discussion_Count}</TableCell>
-                      <TableCell>{((student.discussion_Count/student.max_Discussion)*100).toFixed(2)}%</TableCell>
+                      {/* <TableCell>{student.discussion_Count}</TableCell> */}
+                      <TableCell>{student.discussion_Percent}%</TableCell>
                       
                       <TableCell>{student.grades.current_grade}</TableCell>
                       <TableCell>
