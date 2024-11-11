@@ -20,8 +20,10 @@ app.use((req, res, next) => {
   next();
 });
 
+//middlewares
+
 //routes
-require("./routes/")(app); //all routes
+require("./routes")(app); //all routes
 
 if (true || process.env.NODE_ENV === "production") {
 

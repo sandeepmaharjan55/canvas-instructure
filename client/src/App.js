@@ -13,14 +13,11 @@ import {
   Box,
   Paper,
   Button,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
 } from '@mui/material';
 
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { Card, CardHeader, CardContent, Input, Table, TableBody, TableCell, TableHead, TableRow, Tabs, Tab } from '@mui/material';
-import { Filter, ArrowUp, ArrowDown } from 'lucide-react';
+import { Filter } from 'lucide-react';
 import './App.css';
 const NodeServer_API_BASE_URL = 'http://localhost:7004/';
 
@@ -70,7 +67,6 @@ const predictionData = [
 const CourseEnrollments = () => {
   const { id } = useParams();
   const [enrollments, setEnrollments] = useState([]);
-  const [predictions, setPrediction] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedStudent, setSelectedStudent] = useState(null);
 
@@ -218,7 +214,7 @@ const CourseEnrollments = () => {
               <Table>
                 <TableHead>
                   <TableRow className="bg-gray-200">
-                    {['Name', 'Total Activity', 'Attendance', 'Participation','Page Views','Discussion Post Rate','Current Grade', 'Current Score', "Future Result Prediction"].map((header) => (
+                    {['Name', 'Total Activity', 'Attendance', 'Participation','Page Views','Discussion Post Rate', 'Current Score', "Future Result Prediction"].map((header) => (
                       <TableCell key={header} className="cursor-pointer py-3 px-6 text-left font-semibold">
                         {header}
                       </TableCell>
@@ -247,7 +243,6 @@ const CourseEnrollments = () => {
                       {/* <TableCell>{student.discussion_Count}</TableCell> */}
                       <TableCell>{student.discussion_Percent}%</TableCell>
                       
-                      <TableCell>{student.grades.current_grade}</TableCell>
                       <TableCell>
                         <span className={`px-3 py-1 rounded-full text-xs ${
                           (student.grades.current_score >= 70)  ? 'grade grade-green' :

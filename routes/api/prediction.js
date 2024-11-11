@@ -26,12 +26,17 @@ const myNetwork = new Network({
 
 // Training data (e.g., Total Activity, Attendance, Participation, Page Views, Discussion, Current Grade Score)
 const trainingData = [
-  { input: [2500, 80, 150, 100, 10, 90], output: [1] },  // Example student: Pass
-  { input: [12, 80, 60, 60, 1, 40], output: [0] },      // Example student: Fail
-  { input: [4000, 95, 205, 11, 80], output: [1] },      // Example student: Pass
-  { input: [5, 60, 50, 50, 1, 50], output: [0] },       // Example student: Fail
+  { input: [90, 80, 80, 50, 50, 70], output: [1] },        // Example student: Pass
+  { input: [5, 50, 50, 15, 15, 45], output: [0] },          // Example student: Fail
+  { input: [80, 95, 70, 60, 80, 80], output: [1] },      // Example student: Pass
+  { input: [12, 40, 40, 10, 24, 50], output: [0] },        // Example student: Fail
+  { input: [70, 90, 72, 55, 55, 75], output: [1] },        // Example student: Pass
+  { input: [0, 45, 45, 25, 0, 55], output: [0] },          // Example student: Fail
+  { input: [100, 82, 100, 100, 100, 80], output: [1] },      // Example student: Pass
+  { input: [20, 55, 12, 10, 15, 30], output: [0] },       // Example student: Fail
+  { input: [85, 90, 85, 70, 70,73], output: [1] },  
+  { input: [1, 0, 1, 1, 0, 1], output: [0] },          // Example student: Fail
 ];
-
 // Training the network
 function trainNetwork() {
   const trainer = new synaptic.Trainer(myNetwork);
@@ -49,7 +54,7 @@ trainNetwork();
 
 // Prediction endpoint
 router.post('/predict', (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
   const { totalActivity, attendance, participation, pageViews, discussionCount, currentGradeScore } = req.body;
 
   // Ensure the input data is valid

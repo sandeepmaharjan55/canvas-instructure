@@ -14,7 +14,9 @@ router.get('/list', async (req, res) => {
         'Accept': 'application/json',
       }
     });
-    res.json(response.data);
+    const filteredResponse = response.data.filter((course) => course.workflow_state === 'available');
+      //postCounts[a.user_id]?postCounts[a.user_id]:0
+    res.json(filteredResponse);
   } catch (error) {
     console.error('Error fetching courses:', error);
     res.status(500).json({ error: 'Failed to fetch courses' });
@@ -140,7 +142,7 @@ router.get('/:id', async (req, res) => {
 
 
     // Merge the data by matching student IDs
-    const detailedEnrollments = enrollments.map((enrollment) => {
+    const detailedEnrollments = enrollments.filter((student) => student.type === 'StudentEnrollment').map((enrollment) => {
       const studentAnalytics = analyticsData.find(
         (analytics) => analytics.id === enrollment.user_id
       );
@@ -149,7 +151,7 @@ router.get('/:id', async (req, res) => {
       ):null;
 
       const activityPData = enrollment?((enrollment.total_activity_time / maxActivityTime) * 100).toFixed(2):0;
-     
+     //console.log(activityPData);
       // const assignmentAnalytics = assignmentSubmissions.find(
       //   (analytics) => analytics.user_id === enrollment.user_id
       // );
@@ -167,15 +169,15 @@ router.get('/:id', async (req, res) => {
 
       const pageViewsPercent=(((studentAnalytics?.page_views ?? 0)/(studentAnalytics?.max_page_views ?? 0))*100).toFixed(2);
       
-      console.log(discussionPercent );
+      //console.log(discussionPercent );
       return axios.post(
         `${NodeServer_API_BASE_URL}api/predictions/predict`, 
         {
-          totalActivity: enrollment?activityPData:0,
+          totalActivity: parseInt(enrollment?activityPData:0),
           attendance: rollCallAnalytics?.score ?? 0,
-          participation: participationPercent?participationPercent:0,
-          pageViews: pageViewsPercent?pageViewsPercent:0,
-          discussionCount: discussionPercent?discussionPercent:0,
+          participation: parseInt(participationPercent?participationPercent:0),
+          pageViews: parseInt(pageViewsPercent?pageViewsPercent:0),
+          discussionCount: parseInt(discussionPercent?discussionPercent:0),
           currentGradeScore: enrollment?.grades?.current_score ?? 0,
         },
         {
