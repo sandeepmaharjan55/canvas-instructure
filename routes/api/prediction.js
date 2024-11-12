@@ -9,8 +9,8 @@ router.use(express.json());
 const { Network, Layer, Architect } = synaptic;
 
 // Define the architecture of the neural network
-const inputLayer = new Layer(4);  // 4 input features (Total Activity, Attendance, Participation, Page Views)
-const hiddenLayer = new Layer(5); // Hidden layer with 5 neurons
+const inputLayer = new Layer(6);  // 4 input features (Total Activity, Attendance, Participation, Page Views)
+const hiddenLayer = new Layer(7); // Hidden layer with 5 neurons
 const outputLayer = new Layer(1); // Output layer with 1 neuron (binary classification: Pass or Fail)
 
 // Connect the layers
