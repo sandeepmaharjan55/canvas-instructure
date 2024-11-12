@@ -19,7 +19,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'rec
 import { Card, CardHeader, CardContent, Input, Table, TableBody, TableCell, TableHead, TableRow, Tabs, Tab } from '@mui/material';
 import { Filter } from 'lucide-react';
 import './App.css';
-const NodeServer_API_BASE_URL = 'http://localhost:7004/';
+const NodeServer_API_BASE_URL = 'http://localhost:7005/';
 
 // Main component displaying list of courses
 const CoursesList = ({ courses }) => {
@@ -119,9 +119,9 @@ const CourseEnrollments = () => {
       <CardContent className="p-6">
         <div>
           {/* Performance Bar Chart */}
-          <div>
-
-            <BarChart width={1200} height={400} data={[
+     
+<div className='pull-left'>
+            <BarChart width={1000} height={350} data={[
               { subject: 'Total Activity', score: student.activity_Time_Percent },
               { subject: 'Grade', score: student.grades.current_score },
               { subject: 'Attendance', score: (student.attendance_Percentage).toFixed(2)  },
@@ -136,29 +136,26 @@ const CourseEnrollments = () => {
               <Tooltip />
               <Bar dataKey="score" fill="#82ca9d" />
             </BarChart>
-          </div>
-
-          {/* Detailed Metrics */}
-          <div>
+       </div>
+       <div className='pull-right styled-div'>
             <h4>Key Metrics</h4>
-            <div>
+         
               {[
                 { label: 'Total Activity', value: `${student.activity_Time_Percent} %` },
                 { label: 'Current Grade', value: `${student.grades.current_score }%` },
                 { label: 'Attendance', value: `${(student.attendance_Percentage).toFixed(2) }%` },
                 { label: 'Discussion', value: `${student.discussion_Percent}%` },
-                { label: 'Page Views', value: `${student.page_Views_Percent }%` },
                 { label: 'Participation', value: `${student.participation_percent}%` },
+                { label: 'Page Views', value: `${student.page_Views_Percent }%` },
                 { label: 'Page Views', value: `${student.page_Views_Percent }` },
                 { label: 'Risk Level', value: (student.grades.current_score>=70?"Low":
                   (student.grades.current_score>=41 && student.grades.current_score<=69)?"Medium":"High")}
               ].map((metric, index) => (
                 <div key={index}>
-                  <div>{metric.label}</div>
-                  <div>{metric.value}</div>
+                  <div>{metric.label}: {metric.value}</div>
                 </div>
               ))}
-            </div>
+          
           </div>
         </div>
       </CardContent>

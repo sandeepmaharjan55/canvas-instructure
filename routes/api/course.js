@@ -1,7 +1,7 @@
 const axios = require('axios');
 const router = require("express").Router();
 const CANVAS_API_BASE_URL = 'https://canvas.instructure.com/api/v1';
-const NodeServer_API_BASE_URL = 'http://localhost:7004/';
+const NodeServer_API_BASE_URL = 'http://localhost:7005/';
 
 // @route:  GET api/courses/list
 // @desc:   get all the courses list
