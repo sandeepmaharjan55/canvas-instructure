@@ -52,10 +52,10 @@ const CoursesList = ({ courses }) => {
 
 
 const engagementTrends = [
-  { week: 'W1', forum: 85, video: 92, quiz: 78, assignment: 88 },
-  { week: 'W2', forum: 88, video: 85, quiz: 82, assignment: 90 },
-  { week: 'W3', forum: 92, video: 88, quiz: 85, assignment: 87 },
-  { week: 'W4', forum: 90, video: 95, quiz: 88, assignment: 92 }
+  { week: 'W1', discussion: 85, attendance: 92, quiz: 78, assignment: 88 },
+  { week: 'W2', discussion: 88, attendance: 85, quiz: 82, assignment: 90 },
+  { week: 'W3', discussion: 92, attendance: 88, quiz: 85, assignment: 87 },
+  { week: 'W4', discussion: 90, attendance: 95, quiz: 88, assignment: 92 }
 ];
 
 const predictionData = [
@@ -272,10 +272,10 @@ const CourseEnrollments = () => {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="forum" fill="#8884d8" />
-                <Bar dataKey="video" fill="#82ca9d" />
+                <Bar dataKey="discussion" fill="#8884d8" />
+                <Bar dataKey="attendance" fill="#82ca9d" />
                 <Bar dataKey="quiz" fill="#ff8042" />
-                <Bar dataKey="assignment" fill="#ff7300" />
+                <Bar dataKey="assignment" fill="#1976d2" />
               </BarChart>
             </CardContent>
           </Card>
