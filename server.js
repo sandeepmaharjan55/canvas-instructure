@@ -16,7 +16,7 @@ const app = express();
 
 // Initialize LTI
 lti.setup(process.env.LTI_KEY,{
-  url: `mongodb+srv://sandeep:maharjan@canvas.xdlpt.mongodb.net/`, // Database URL
+  url: `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@canvas.xdlpt.mongodb.net/`, // Database URL
   connection: { useNewUrlParser: true, useUnifiedTopology: true } 
 });
 
