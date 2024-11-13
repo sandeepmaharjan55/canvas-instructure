@@ -19,8 +19,14 @@ yarn install
 - add these strings in .env file
 
 ```
-NODE_ENV='<production>/<development>'
-REACT_APP_CANVAS_TOKEN='<Token>'
+NODE_ENV='<string>'
+REACT_APP_CANVAS_TOKEN='<string>'
+LTI_KEY='<string>'
+MONGODB_USERNAME='<string>'
+MONGODB_PASSWORD='<string>'
+NodeServer_API_BASE_URL='<string>'
+PORT='<string>'
+CANVAS_API_BASE_URL='<string>'
 ```
 
 ## After the above all setup
