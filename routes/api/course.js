@@ -1,14 +1,14 @@
 const axios = require('axios');
 const router = require("express").Router();
-const CANVAS_API_BASE_URL = 'https://canvas.instructure.com/api/v1';
-const NodeServer_API_BASE_URL = 'http://localhost:7005/';
+// const CANVAS_API_BASE_URL = 'https://canvas.instructure.com/api/v1';
+// const NodeServer_API_BASE_URL = 'http://localhost:7007/';
 
 // @route:  GET api/courses/list
 // @desc:   get all the courses list
 // @access: bearer token
 router.get('/list', async (req, res) => {
   try {
-    const response = await axios.get(`${CANVAS_API_BASE_URL}/courses`, {
+    const response = await axios.get(`${process.env.CANVAS_API_BASE_URL}/courses`, {
       headers: {
         'Authorization': `Bearer ${process.env.REACT_APP_CANVAS_TOKEN}`, // Make sure to define this token in .env file
         'Accept': 'application/json',
@@ -31,7 +31,7 @@ router.get('/:id', async (req, res) => {
   try {
     // Fetch basic enrollments data
     const { id } = req.params;
-    const enrollmentsResponse = await axios.get(`${CANVAS_API_BASE_URL}/courses/${id}/enrollments`, {
+    const enrollmentsResponse = await axios.get(`${process.env.CANVAS_API_BASE_URL}/courses/${id}/enrollments`, {
       headers: { 'Authorization': `Bearer ${process.env.REACT_APP_CANVAS_TOKEN}`,'Accept': 'application/json', }
     });
 
@@ -44,14 +44,14 @@ router.get('/:id', async (req, res) => {
     const maxActivityTime = Math.max(...enrollments.filter((student) => student.type === 'StudentEnrollment').map(a => a.total_activity_time));
 
     // Fetch analytics data for more student activity details
-    const analyticsResponse = await axios.get(`${CANVAS_API_BASE_URL}/courses/${id}/analytics/student_summaries`, {
+    const analyticsResponse = await axios.get(`${process.env.CANVAS_API_BASE_URL}/courses/${id}/analytics/student_summaries`, {
       headers: { 'Authorization': `Bearer ${process.env.REACT_APP_CANVAS_TOKEN}`,'Accept': 'application/json', }
     });
 
     const analyticsData = analyticsResponse.data;
 
     // Fetch analytics data for more student discussion posts
-    const discussionResponse = await axios.get(`${CANVAS_API_BASE_URL}/courses/${id}/discussion_topics`, {
+    const discussionResponse = await axios.get(`${process.env.CANVAS_API_BASE_URL}/courses/${id}/discussion_topics`, {
       headers: { 'Authorization': `Bearer ${process.env.REACT_APP_CANVAS_TOKEN}`,'Accept': 'application/json', }
     });
     const discussionData = discussionResponse.data;
@@ -63,7 +63,7 @@ router.get('/:id', async (req, res) => {
 
 
     // Fetch analytics data for more student assignments
-    const assignmentResponse = await axios.get(`${CANVAS_API_BASE_URL}/courses/${id}/assignments`, {
+    const assignmentResponse = await axios.get(`${process.env.CANVAS_API_BASE_URL}/courses/${id}/assignments`, {
       headers: { 'Authorization': `Bearer ${process.env.REACT_APP_CANVAS_TOKEN}`,'Accept': 'application/json', }
     });
     const assignmentData = assignmentResponse.data;
@@ -73,7 +73,7 @@ router.get('/:id', async (req, res) => {
       (analytics) => analytics.name === "Roll Call Attendance"
     );
   
-    const rollCallDataResponse = studentRollAnalytics?await axios.get(`${CANVAS_API_BASE_URL}/courses/${id}/assignments/${studentRollAnalytics.id}/submissions`, {
+    const rollCallDataResponse = studentRollAnalytics?await axios.get(`${process.env.CANVAS_API_BASE_URL}/courses/${id}/assignments/${studentRollAnalytics.id}/submissions`, {
       headers: { 'Authorization': `Bearer ${process.env.REACT_APP_CANVAS_TOKEN}`,'Accept': 'application/json', }
     }):null;
       const rollCallData = rollCallDataResponse?.data || null;
@@ -86,7 +86,7 @@ router.get('/:id', async (req, res) => {
        
       //       // Fetch submissions for each assignment
       //       const assignmentResponse = await axios.get(
-      //         `${CANVAS_API_BASE_URL}/courses/${id}/assignments/${assignment.id}/submissions`, {
+      //         `${process.env.CANVAS_API_BASE_URL}/courses/${id}/assignments/${assignment.id}/submissions`, {
       //           headers: { 'Authorization': `Bearer ${process.env.REACT_APP_CANVAS_TOKEN}`,'Accept': 'application/json', 
       //         }}
       //       );
@@ -123,7 +123,7 @@ router.get('/:id', async (req, res) => {
 
 
       // const responsePrediction = await axios.post(
-      //   `${NodeServer_API_BASE_URL}api/predictions/predict`,
+      //   `${process.env.NodeServer_API_BASE_URL}/api/predictions/predict`,
       //   {
       //     totalActivity: 1000,
       //     attendance: 30,
@@ -171,7 +171,7 @@ router.get('/:id', async (req, res) => {
       
       //console.log(discussionPercent );
       return axios.post(
-        `${NodeServer_API_BASE_URL}api/predictions/predict`, 
+        `${process.env.NodeServer_API_BASE_URL}/api/predictions/predict`, 
         {
           totalActivity: parseInt(enrollment?activityPData:0),
           attendance: rollCallAnalytics?.score ?? 0,

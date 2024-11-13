@@ -19,7 +19,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'rec
 import { Card, CardHeader, CardContent, Input, Table, TableBody, TableCell, TableHead, TableRow, Tabs, Tab } from '@mui/material';
 import { Filter } from 'lucide-react';
 import './App.css';
-const NodeServer_API_BASE_URL = 'http://localhost:7006/';
+const NodeServer_API_BASE_URL = 'http://localhost:7007/';
 
 // Main component displaying list of courses
 const CoursesList = ({ courses }) => {
